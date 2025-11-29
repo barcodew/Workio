@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Carbon;
+use App\Models\Pelamar;
+use Illuminate\Support\Facades\Auth;
 
 class PelamarProfileController extends Controller {
     public function edit() {
@@ -16,19 +19,47 @@ class PelamarProfileController extends Controller {
     public function update( Request $request ) {
         $user    = auth()->user();
         $pelamar = $user->pelamar;
-        // sesuaikan dengan relasi milikmu
+        // pastikan relasi sudah benar
 
         $validated = $request->validate( [
-            'tanggal_lahir' => [ 'nullable', 'date' ],
+            'name'          => [ 'required', 'string', 'max:100' ],
+            'tanggal_lahir' => [
+                'nullable',
+                'date',
+
+                function ( $attribute, $value, $fail ) {
+                    if ( !$value ) {
+                        return;
+                    }
+
+                    try {
+                        $birthDate = Carbon::parse( $value );
+                    } catch ( \Exception $e ) {
+                        return $fail( 'Tanggal lahir tidak valid.' );
+                    }
+
+                    // minimal 18 tahun
+                    $minDate = Carbon::now()->subYears( 18 );
+
+                    if ( $birthDate->greaterThan( $minDate ) ) {
+                        $fail( 'Umur minimal 18 tahun untuk menggunakan Workio.' );
+                    }
+                }
+                ,
+            ],
             'telepon'       => [ 'nullable', 'string', 'max:20' ],
             'alamat'        => [ 'nullable', 'string', 'max:255' ],
-            'pendidikan'    => [ 'nullable', 'string' ],
-            'keterampilan'  => [ 'nullable', 'string' ],
-            'cv'            => [ 'nullable', 'file', 'mimes:pdf,doc,docx', 'max:2048' ],   // 2MB
-            'avatar'        => [ 'nullable', 'image', 'mimes:jpg,jpeg,png', 'max:1024' ], // 1MB ( KB )
+            'pendidikan'    => [ 'nullable' ],
+            'keterampilan'  => [ 'nullable' ],
+            'riwayat_pekerjaan' => [ 'nullable' ],
+            'cv'            => [ 'nullable', 'file', 'mimes:pdf,doc,docx', 'max:2048' ],
+            'avatar'        => [ 'nullable', 'image', 'mimes:jpg,jpeg,png', 'max:1024' ],
         ] );
 
-        /* ===  === AVATAR ===  === */
+        /* === UPDATE NAMA USER === */
+        $user->name = $validated[ 'name' ];
+
+        /* === AVATAR === */
         if ( $request->hasFile( 'avatar' ) ) {
             // hapus file lama jika ada
             if ( $user->avatar_path && Storage::disk( 'public' )->exists( $user->avatar_path ) ) {
@@ -40,10 +71,12 @@ class PelamarProfileController extends Controller {
 
             // update kolom di tabel users
             $user->avatar_path = $path;
-            $user->save();
         }
 
-        /* ===  === CV ( sesuaikan dengan kode lamamu ) ===  === */
+        // simpan perubahan user ( nama + avatar kalau ada )
+        $user->save();
+
+        /* === CV === */
         if ( $request->hasFile( 'cv' ) ) {
             if ( $pelamar->cv_path && Storage::disk( 'public' )->exists( $pelamar->cv_path ) ) {
                 Storage::disk( 'public' )->delete( $pelamar->cv_path );
@@ -53,15 +86,43 @@ class PelamarProfileController extends Controller {
             $pelamar->cv_path = $cvPath;
         }
 
-        $pelamar->tanggal_lahir = $validated[ 'tanggal_lahir' ] ?? null;
-        $pelamar->telepon       = $validated[ 'telepon' ] ?? null;
-        $pelamar->alamat        = $validated[ 'alamat' ] ?? null;
-        $pelamar->pendidikan    = $validated[ 'pendidikan' ] ?? null;
-        $pelamar->keterampilan  = $validated[ 'keterampilan' ] ?? null;
+        // array input -> bersihkan yg kosong
+        $pendidikan       = array_filter( $request->input( 'pendidikan', [] ), fn( $v ) => trim( $v ) !== '' );
+        $keterampilan     = array_filter( $request->input( 'keterampilan', [] ), fn( $v ) => trim( $v ) !== '' );
+        $riwayatPekerjaan = array_filter( $request->input( 'riwayat_pekerjaan', [] ), fn( $v ) => trim( $v ) !== '' );
+
+        // simpan field sederhana di pelamar
+        $pelamar->tanggal_lahir     = $validated[ 'tanggal_lahir' ] ?? null;
+        $pelamar->telepon           = $validated[ 'telepon' ] ?? null;
+        $pelamar->alamat            = $validated[ 'alamat' ] ?? null;
+
+        // simpan sebagai array ( otomatis jadi JSON karena casts di model )
+        $pelamar->pendidikan        = array_values( $pendidikan );
+        $pelamar->keterampilan      = array_values( $keterampilan );
+        $pelamar->riwayat_pekerjaan = array_values( $riwayatPekerjaan );
+
         $pelamar->save();
 
         return redirect()
         ->route( 'pelamar.profil.edit' )
         ->with( 'ok', 'Profil berhasil diperbarui.' );
     }
+
+   public function show(Pelamar $pelamar)
+    {
+        // muat user + relasi lain kalau perlu
+        $pelamar->load('user');
+
+        // semua lamaran si pelamar (lengkap dengan lowongan & perusahaan)
+        $lamarans = $pelamar->lamarans()
+            ->with(['lowongan.perusahaan'])
+            ->orderByDesc('tanggal_lamar')
+            ->get();
+
+        return view('guest.pelamar.show', [
+            'pelamar'  => $pelamar,
+            'lamarans' => $lamarans,
+        ]);
+    }
+
 }

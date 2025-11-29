@@ -501,6 +501,7 @@
         .action-row>*:last-child {
             margin-right: 0
         }
+
     </style>
 
     @stack('styles')
@@ -510,7 +511,7 @@
 
     @yield('content')
 
-  <!-- FOOTER MINI -->
+    <!-- FOOTER MINI -->
     {{-- <div class="footer jb_cover">
         <div class="container">
             <div class="row">
@@ -550,6 +551,52 @@
     <script src="{{ asset('js/imagesloaded.pkgd.min.js') }}"></script>
     <script src="{{ asset('js/isotope.pkgd.min.js') }}"></script>
     <script src="{{ asset('js/custom.js') }}"></script>
+
+    {{-- SweetAlert2 CDN --}}
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    {{-- Flash message global untuk dashboard pelamar --}}
+    @if (session('ok'))
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Berhasil',
+                    text: @json(session('ok')),
+                    confirmButtonColor: '#6f42c1'
+                });
+            });
+        </script>
+    @endif
+
+    @if (session('error'))
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Gagal',
+                    text: @json(session('error')),
+                    confirmButtonColor: '#e11d48'
+                });
+            });
+        </script>
+    @endif
+
+    @if ($errors->any())
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Terjadi kesalahan',
+                    html: '<ul style="text-align:left;margin:0;padding-left:18px;">' +
+                        {!! json_encode($errors->all()) !!}.map(e => `<li>${e}</li>`).join('') +
+                        '</ul>',
+                    confirmButtonColor: '#e11d48'
+                });
+            });
+        </script>
+    @endif
+
 
     @stack('scripts')
 </body>

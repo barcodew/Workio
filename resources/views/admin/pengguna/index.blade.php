@@ -4,25 +4,7 @@
 
 @push('styles')
 <style>
-  /* Sembunyikan pagination otomatis yg bisa nempel persis setelah table-wrap (jaga-jaga) */
-  .boxed .table-wrap > nav[role="navigation"]{display:none!important;}
 
-  /* Perapihan sel role */
-  .role-cell{display:flex;align-items:center;gap:.5rem 1rem;flex-wrap:wrap}
-  .role-inline{min-width:150px}
-
-  /* Util tombol kecil */
-  .btn-xs{padding:.38rem .6rem;font-size:.82rem;border-radius:.6rem}
-
-  /* Pager bar styling */
-  .pager-bar{display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap}
-  .pager-bar .muted{color:#6b7280}
-
-  /* Pill badge role */
-  .pill{display:inline-flex;align-items:center;gap:.35rem;padding:.22rem .55rem;border-radius:999px;font-weight:600;font-size:.78rem;border:1px solid transparent}
-  .pill--admin{background:#dbeafe;border-color:#93c5fd;color:#1e3a8a}
-  .pill--perusahaan{background:#fef3c7;border-color:#fcd34d;color:#854d0e}
-  .pill--pelamar{background:#e5e7eb;border-color:#d1d5db;color:#374151}
 </style>
 @endpush
 

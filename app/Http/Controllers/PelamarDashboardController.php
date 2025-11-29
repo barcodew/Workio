@@ -31,4 +31,7 @@ class PelamarDashboardController extends Controller {
 
         return view( 'pelamar.dashboard', compact( 'stat', 'lamaranTerakhir', 'rekomendasi', 'pelamar' ) );
     }
+
+
+    
 }

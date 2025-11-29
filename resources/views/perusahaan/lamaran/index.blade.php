@@ -84,8 +84,15 @@
                 @endphp
                 <tr>
                   <td class="fw-semibold">
-                    {{ $a->pelamar->name ?? '-' }}
-                    <div class="muted">{{ $a->pelamar->email ?? '' }}</div>
+                    @if($a->pelamar)
+                      <a href="{{ route('candidates.show', $a->pelamar->pelamar) }}"
+                         class="pelamar-link">
+                        {{ $a->pelamar->name }}
+                      </a>
+                      <div class="muted">{{ $a->pelamar->email }}</div>
+                    @else
+                      -
+                    @endif
                   </td>
 
                   <td>
@@ -118,11 +125,21 @@
                       </button>
 
                       <div class="action-menu dropdown-menu">
+                        {{-- Lihat profil pelamar --}}
+                        @if($a->pelamar)
+                          <a href="{{ route('candidates.show', $a->pelamar->pelamar) }}"
+                             class="dropdown-item">
+                            <i class="fas fa-id-card"></i> Lihat Profil Pelamar
+                          </a>
+                          <div class="dropdown-divider"></div>
+                        @endif
+
                         {{-- Proses --}}
                         <form action="{{ route('perusahaan.lamaran.status', $a) }}" method="POST" class="m-0 p-0">
                           @csrf @method('PATCH')
                           <input type="hidden" name="status" value="diproses">
-                          <button type="submit" class="dropdown-item" @disabled($a->status==='diproses')}>
+                          <button type="submit" class="dropdown-item"
+                                  @disabled($a->status==='diproses')>
                             <i class="fas fa-spinner"></i> Tandai Diproses
                           </button>
                         </form>
@@ -131,7 +148,8 @@
                         <form action="{{ route('perusahaan.lamaran.status', $a) }}" method="POST" class="m-0 p-0">
                           @csrf @method('PATCH')
                           <input type="hidden" name="status" value="diterima">
-                          <button type="submit" class="dropdown-item" @disabled($a->status==='diterima')}>
+                          <button type="submit" class="dropdown-item"
+                                  @disabled($a->status==='diterima')>
                             <i class="fas fa-check-circle"></i> Terima
                           </button>
                         </form>
@@ -141,7 +159,8 @@
                               onsubmit="return confirm('Tolak pelamar ini?')">
                           @csrf @method('PATCH')
                           <input type="hidden" name="status" value="ditolak">
-                          <button type="submit" class="dropdown-item danger" @disabled($a->status==='ditolak')}>
+                          <button type="submit" class="dropdown-item danger"
+                                  @disabled($a->status==='ditolak')>
                             <i class="fas fa-times-circle"></i> Tolak
                           </button>
                         </form>
@@ -166,3 +185,15 @@
   </div>
 @endsection
 
+@push('styles')
+<style>
+  .pelamar-link {
+    color: #111827;
+    text-decoration: none;
+  }
+  .pelamar-link:hover {
+    color: #7c3aed;
+    text-decoration: underline;
+  }
+</style>
+@endpush

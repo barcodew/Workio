@@ -23,6 +23,7 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('css/nice-select.css') }}" />
     <link rel="stylesheet" type="text/css" href="{{ asset('css/reset.css') }}" />
     <link rel="stylesheet" type="text/css" href="{{ asset('css/style.css') }}" />
+
     <link rel="stylesheet" type="text/css" href="{{ asset('css/responsive.css') }}" />
     <!--favicon-->
     <link rel="shortcut icon" type="image/png" href="{{ asset('images/favicon.png') }}" />
@@ -30,6 +31,226 @@
         .pricing_box_wrapper:hover {
             transform: translateY(-10px);
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+        }
+
+        /* Avatar header */
+        .header-avatar-wrapper {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 2px solid rgba(255, 255, 255, .6);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .header-avatar-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .header-avatar-name {
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        /* Search pill */
+        .landing-search-form {
+            max-width: 980px;
+            margin: 0 auto;
+        }
+
+        .landing-search-inner {
+            display: flex;
+            align-items: stretch;
+            background: #ffffff;
+            border-radius: 999px;
+            border: 1px solid #e5e7eb;
+            box-shadow: 0 8px 20px rgba(15, 23, 42, .08);
+            overflow: hidden;
+        }
+
+        .landing-search-field {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            padding: 0 18px;
+            min-height: 60px;
+        }
+
+        .landing-search-border {
+            border-right: 1px solid #e5e7eb;
+        }
+
+        .landing-search-input,
+        .landing-search-select {
+            width: 100%;
+            border: none;
+            outline: none;
+            background: transparent;
+            font-size: 14px;
+            color: #374151;
+        }
+
+        .landing-search-select {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%239CA3AF' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 0px center;
+            padding-right: 18px;
+        }
+
+        .landing-search-input::placeholder,
+        .landing-search-select {
+            color: #9ca3af;
+        }
+
+        .landing-search-submit {
+            width: 72px;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            background: linear-gradient(135deg, #a855f7, #6366f1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            color: #ffffff;
+        }
+
+        .landing-search-submit i {
+            margin-left: 1px;
+        }
+
+        .landing-search-submit:hover {
+            opacity: 0.9;
+        }
+
+        @media (max-width: 767.98px) {
+            .landing-search-inner {
+                flex-direction: column;
+                border-radius: 24px;
+            }
+
+            .landing-search-field {
+                border-right: none !important;
+                border-bottom: 1px solid #e5e7eb;
+                min-height: 52px;
+            }
+
+            .landing-search-field:last-of-type {
+                border-bottom: none;
+            }
+
+            .landing-search-submit {
+                width: 100%;
+                border-radius: 0 0 24px 24px;
+                min-height: 50px;
+            }
+        }
+
+        /* Hilangkan jarak aneh di atas header */
+        .cp_navi_main_wrapper.index_2_top_header.index_3_top_header.jb_cover {
+            margin-top: 0;
+            padding-top: 15px;
+            padding-bottom: 15px;
+        }
+
+        /* Menu + avatar sejajar rapi */
+        .jb_navigation_wrapper .mainmenu .main_nav_ul.menu_2_ul {
+            display: flex;
+            align-items: center;
+            gap: 32px;
+            margin: 0;
+        }
+
+        .jb_navigation_wrapper .mainmenu .main_nav_ul.menu_2_ul>li {
+            display: flex;
+            align-items: center;
+        }
+
+        .jb_navigation_wrapper .mainmenu .main_nav_ul.menu_2_ul>li>a.gc_main_navigation {
+            display: inline-flex;
+            align-items: center;
+            padding-top: 0;
+            padding-bottom: 0;
+        }
+
+        /* Style khusus item avatar */
+        .header-avatar-item>a.gc_main_navigation {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* Buang garis/pseudo-element ungu di bawah avatar */
+        .header-avatar-item a.gc_main_navigation::before,
+        .header-avatar-item a.gc_main_navigation::after {
+            display: none !important;
+        }
+
+        /* Avatar kecil dan crop rapi */
+        .header-avatar-wrapper {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 2px solid rgba(255, 255, 255, 0.7);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .header-avatar-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .header-avatar-name {
+            font-size: 13px;
+            font-weight: 500;
+            white-space: nowrap;
+        }
+
+        /* ... CSS avatar & search kamu yang sebelumnya ... */
+
+        /* ==== PERKECIL JARAK ANTAR SECTION ==== */
+        .services_wrapper.control_wrapper {
+            padding-top: 60px;
+            /* atau sesuaikan selera */
+            padding-bottom: 40px;
+            /* ini yang biasanya terlalu besar */
+        }
+
+        .popular_wrapper {
+            margin-top: 0;
+            /* buang gap tambahan di atas */
+            padding-top: 40px;
+            /* cukup sedikit padding */
+            padding-bottom: 60px;
+        }
+
+        .job-logo-wrapper {
+            width: 70px;
+            height: 70px;
+            border-radius: 16px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #ffffff;
+            box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
+        }
+
+        .job-logo-img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
         }
     </style>
 </head>
@@ -215,18 +436,36 @@
                                     <br> Sulawesi Barat, Indonesia.
                                 </p>
                             </li>
+                        </ul>
+
+                    </div>
+                </div>
+                <div class="col-lg-3 col-sm-6 col-12">
+                    <div class="footerNav jb_cover footer_border_displ">
+                        <ul class="footer_first_contact">
+
                             <li><i class="flaticon-telephone"></i>
                                 <p>+62 8123-4567-8901
                                     <br> +62 8123-4567-8901
                                 </p>
                             </li>
+
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-sm-6 col-12">
+                    <div class="footerNav jb_cover footer_border_displ">
+                        <ul class="footer_first_contact">
                             <li><i class="flaticon-envelope"></i><a href="#">info@workio.com </a>
                                 <br>
                                 <a href="#">support@workio.com</a>
                             </li>
 
                         </ul>
-
+                    </div>
+                </div>
+                <div class="col-lg-3 col-sm-6 col-12">
+                    <div class="footerNav jb_cover">
                         <ul class="icon_list_news index2_icon_list jb_cover">
                             <li><a href="#"><i class="fab fa-facebook-f"></i></a></li>
                             <li>
@@ -235,80 +474,6 @@
                             </li>
                             <li><a href="#"><i class="fab fa-linkedin-in"></i></a></li>
                             <li><a href="#"><i class="fab fa-google-plus-g"></i></a></li>
-
-                        </ul>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-sm-6 col-12">
-                    <div class="footerNav jb_cover footer_border_displ">
-                        <h5>features</h5>
-                        <ul class="nav-widget">
-                            <li><a href="#"><i class="fa fa-square"></i>Job Management & Billing
-                                </a></li>
-
-                            <li><a href="#"><i class="fa fa-square"></i>Time & Materials Tracking
-                                </a></li>
-
-                            <li><a href="#"><i class="fa fa-square"></i>Standards Compliance
-                                </a></li>
-
-                            <li><a href="#"><i class="fa fa-square"></i>Real Time GPS Tracking
-                                </a></li>
-
-                            <li><a href="#"><i class="fa fa-square"></i>Client Portal
-                                </a></li>
-
-                            <li><a href="#"><i class="fa fa-square"></i> Powerful Workflow</a></li>
-
-                        </ul>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-sm-6 col-12">
-                    <div class="footerNav jb_cover footer_border_displ">
-                        <h5>browse</h5>
-                        <ul class="nav-widget">
-
-                            <li><a href="#"><i class="fa fa-square"></i>Freelancers by Category</a></li>
-
-                            <li><a href="#"><i class="fa fa-square"></i> Freelancers in USA </a></li>
-
-                            <li><a href="#"><i class="fa fa-square"></i> Freelancers in UK</a></li>
-
-                            <li><a href="#"><i class="fa fa-square"></i> Freelancers in Canada</a></li>
-                            <li><a href="#"><i class="fa fa-square"></i> Freelancers in india</a></li>
-                            <li><a href="#"><i class="fa fa-square"></i> find jobs</a></li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-sm-6 col-12">
-                    <div class="footerNav jb_cover footer_border_displ">
-                        <h5>app & integration</h5>
-                        <ul class="nav-widget">
-                            <li>
-                                <a href="#"><img src="images/ft1.png" alt="img">Xero
-                                </a>
-                            </li>
-
-                            <li>
-                                <a href="#"><img src="images/ft2.png" alt="img">Reckon
-                                </a>
-                            </li>
-
-                            <li>
-                                <a href="#"><img src="images/ft3.png" alt="img">Flexidocs
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#"><img src="images/ft4.png" alt="img">Microsoft Exchange</a>
-                            </li>
-                            <li>
-                                <a href="#"><img src="images/ft5.png" alt="img"> Mailchimp
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#"><img src="images/ft6.png" alt="img"> MYOB
-                                </a>
-                            </li>
 
                         </ul>
                     </div>

@@ -22,6 +22,8 @@ class Perusahaan extends Model {
         'instagram',
         'facebook',
         'bidang_usaha',  
+           'jumlah_karyawan',   // <--- baru
+        'tahun_berdiri',     // <--- baru
     ];
 
     public function user() {

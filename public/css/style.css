@@ -1,35 +1,9 @@
-/*-------------------------------------   
-	Author: JB desks
-	Copyright © 2022-20 
-	Developed By: Webstrot
----------------------------------------
-    
-    CSS INDEX
-    ===================
-	
-    1. BODY
-	2. CUSTOM CSS / A
-	3. PRELOADER
-	4. header_btn
-	5. jb_banner_wrapper
-	6. jb_banner_list
-	7. jb_category_wrapper
-	8. grow_next_wrapper
-	9. latest_job_wrapper
-	10. top_company_wrapper
-	11. blog_wrapper
-	12. footer
-	13. page_title_section
-	14. iner_abt_wrapper
-	15. team_wrapper
-	16. companies_wrapper
-	17. blog_ct_right_wrapper
-	18. index_2_top_header
-	19. index_3_logo
----------------------------------------*/
-/*--------------
-1.Theme default CSS
---------------------------*/
+/* -------------------------------------   
+	Author: Barcodew
+	Copyright © 2025
+	Developed By: Barcodew
+--------------------------------------- */
+
 body,
 html {
     font-family: "Lato";
@@ -7290,3 +7264,17 @@ a:hover {
     background-clip: text;
     color: transparent;
 }
+
+    .swal2-input,
+    .swal2-file,
+    .swal2-textarea,
+    .swal2-select,
+    .swal2-radio,
+    .swal2-checkbox {
+        display: none !important;
+    }
+
+    /* Optional: rapikan jarak antara teks dan tombol */
+    .swal2-actions {
+        margin-top: 1.5em !important;
+    }
