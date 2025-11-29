@@ -39,7 +39,7 @@ Project ini dibuat dengan **Laravel** dan menggunakan template **JB Desks** yang
 - Dashboard perusahaan:
   - **Kelola lowongan**
     - Buat, edit, hapus lowongan
-    - Status lowongan: `draft`, `pending`, `published`, `closed`
+    - Status lowongan:  `pending`, `published`, `closed`
     - Statistik lamaran per lowongan (total, dikirim, diproses, diterima, ditolak)
   - **Kelola pelamar per lowongan**
     - Lihat daftar pelamar
