@@ -109,6 +109,10 @@ Route::middleware(['auth','role:admin','verified'])->group(function () {
     Route::patch('/admin/pengguna/{user}/role', [AdminUserController::class,'updateRole'])->name('admin.pengguna.role');
     Route::patch('/admin/pengguna/{user}/reset-password', [AdminUserController::class,'resetPassword'])->name('admin.pengguna.reset');
     Route::delete('/admin/pengguna/{user}', [AdminUserController::class,'destroy'])->name('admin.pengguna.destroy');
+
+ 
+        Route::get('/aktivitas', [AdminController::class, 'logsView'])
+             ->name('admin.aktivitas.index');
 });
 
 
