@@ -8,20 +8,18 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
 class AdminUserController extends Controller {
-public function index(Request $r)
-{
-    $q    = $r->input('q');
-    $role = $r->input('role');
+    public function index( Request $r ) {
+        $q    = $r->input( 'q' );
+        $role = $r->input( 'role' );
 
-$users = User::query()
-    ->when(request('q'), fn($q,$v)=>$q->where(fn($x)=>$x->where('name','like',"%$v%")->orWhere('email','like',"%$v%")))
-    ->when(request('role'), fn($q,$v)=>$q->where('role',$v))
-    ->orderByDesc('created_at')
-    ->paginate(10);
+        $users = User::query()
+        ->when( request( 'q' ), fn( $q, $v )=>$q->where( fn( $x )=>$x->where( 'name', 'like', "%$v%" )->orWhere( 'email', 'like', "%$v%" ) ) )
+        ->when( request( 'role' ), fn( $q, $v )=>$q->where( 'role', $v ) )
+        ->orderByDesc( 'created_at' )
+        ->paginate( 10 );
 
-
-    return view('admin.pengguna.index', compact('users'));
-}
+        return view( 'admin.pengguna.index', compact( 'users' ) );
+    }
 
     public function updateRole( Request $r, User $user ) {
         $data = $r->validate( [ 'role' => 'required|in:pelamar,perusahaan,admin' ] );
@@ -32,9 +30,7 @@ $users = User::query()
 
     public function resetPassword( User $user ) {
         $new = Str::password( 10 );
-        // Laravel helper: strong random
         $user->update( [ 'password' => Hash::make( $new ) ] );
-
         // Catatan: kamu bisa kirim ke email di sini jika Mail disetup
         // Mail::to( $user->email )->queue( new PasswordResetMail( $new ) );
 

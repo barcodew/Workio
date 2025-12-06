@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8" />
-    <title>Sign up</title>
+    <title> @yield('title')</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <link rel="stylesheet" href="{{ asset('css/animate.css') }}" />
     <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}" />
@@ -43,7 +43,7 @@
         }
     </style>
 
-    
+
 </head>
 
 <body>
@@ -84,6 +84,18 @@
 
     <script src="{{ asset('js/jquery-3.3.1.min.js') }}"></script>
     <script src="{{ asset('js/bootstrap.min.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    @if (session('swal'))
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                Swal.fire(@json(session('swal')));
+            });
+        </script>
+    @endif
+
+    @stack('scripts')
+
 </body>
 
 </html>

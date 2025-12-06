@@ -16,7 +16,7 @@
                             <div class="col-lg-3 col-md-9 col-12 col-sm-4">
                                 <div class="sub_title_section">
                                     <ul class="sub_title">
-                                        <li><a href="{{ url('/') }}">Home</a>&nbsp;/&nbsp;</li>
+                                        <li><a href="{{ url('/dashboard') }}">Home</a>&nbsp;/&nbsp;</li>
                                         <li>Job Detail</li>
                                     </ul>
                                 </div>
@@ -79,6 +79,42 @@
                             $pelamarProfile->alamat;
 
                         $cvAvailable = $pelamarProfile && $pelamarProfile->cv_path;
+
+                        // ===== KEAHLIAN LOWONGAN + MATCH DENGAN PELAMAR =====
+                        // asumsinya kolom keahlian disimpan sebagai teks dipisah koma / titik koma
+                        $skillsRaw = $lowongan->keahlian ?? '';
+
+                        if (is_array($skillsRaw)) {
+                            $requiredSkills = $skillsRaw;
+                        } else {
+                            $requiredSkills = preg_split('/[,;]+/', (string) $skillsRaw, -1, PREG_SPLIT_NO_EMPTY);
+                        }
+
+                        $requiredSkills = collect($requiredSkills)
+                            ->map(fn ($s) => trim($s))
+                            ->filter()
+                            ->unique()
+                            ->values()
+                            ->all();
+
+                        // skill milik pelamar (kalau ada accessor normalized_skills, pakai itu)
+                        $userSkills = $pelamarProfile?->normalized_skills ?? [];
+                        $userSkillsNorm = collect($userSkills)
+                            ->map(fn ($s) => strtolower(trim($s)))
+                            ->filter()
+                            ->values()
+                            ->all();
+
+                        $skillChips = collect($requiredSkills)->map(function ($s) use ($userSkillsNorm) {
+                            $label = trim($s);
+                            $key   = strtolower($label);
+                            $match = in_array($key, $userSkillsNorm, true);
+
+                            return [
+                                'label' => $label,
+                                'match' => $match,
+                            ];
+                        });
 
                         // boleh apply?
                         $canApply =
@@ -215,6 +251,34 @@
                                     </div>
                                 </div>
                             </div>
+
+                            {{-- Keahlian yang Dibutuhkan --}}
+                            @if($skillChips->count())
+                                <div class="jb-card">
+                                    <div class="jb-hd d-flex justify-content-between align-items-center">
+                                        <h1>Keahlian yang Dibutuhkan</h1>
+                                        {{-- @if($isPelamarLogin)
+                                            <span class="badge rounded-pill bg-light text-muted"
+                                                  style="font-size:11px;">
+                                                Hijau = skill kamu
+                                            </span>
+                                        @endif --}}
+                                    </div>
+                                    <div class="pt-1">
+                                        <div class="skill-chips">
+                                            @foreach($skillChips as $skill)
+                                                <span class="skill-chip {{ $skill['match'] ? 'skill-chip--match' : '' }}">
+                                                    <span class="dot"></span>
+                                                    {{ $skill['label'] }}
+                                                    @if($skill['match'])
+                                                        <i class="fas fa-check-circle"></i>
+                                                    @endif
+                                                </span>
+                                            @endforeach
+                                        </div>
+                                    </div>
+                                </div>
+                            @endif
 
                             {{-- Lamar --}}
                             <div class="jb-card">
@@ -355,6 +419,40 @@
             height: 64px;
             object-fit: cover;
             margin-right: 12px;
+        }
+
+        /* chips keahlian */
+        .skill-chips{
+            display:flex;
+            flex-wrap:wrap;
+            gap:6px;
+        }
+        .skill-chip{
+            display:inline-flex;
+            align-items:center;
+            gap:6px;
+            padding:4px 10px;
+            border-radius:999px;
+            font-size:11px;
+            background:#eef2ff;
+            color:#4338ca;
+        }
+        .skill-chip .dot{
+            width:6px;
+            height:6px;
+            border-radius:999px;
+            background:#a5b4fc;
+        }
+        .skill-chip--match{
+            background:#ecfdf3;
+            color:#166534;
+            border:1px solid #bbf7d0;
+        }
+        .skill-chip--match .dot{
+            background:#4ade80;
+        }
+        .skill-chip--match i{
+            font-size:12px;
         }
     </style>
 @endpush

@@ -165,8 +165,8 @@ Route::middleware(['auth','role:perusahaan','verified'])->group(function () {
 
 
 
-Route::get('/register',                 [RegisterController::class,'choice'])->name('register');                // halaman pilih role
-Route::get('/register/pelamar',         [RegisterController::class,'showPelamar'])->name('register.pelamar');
-Route::get('/register/perusahaan',      [RegisterController::class,'showPerusahaan'])->name('register.perusahaan');
-Route::post('/register',                [RegisterController::class,'store'])->name('register.post');
+Route::get('/register',                 [AuthController::class,'choice'])->name('register');                // halaman pilih role
+Route::get('/register/pelamar',         [AuthController::class,'showPelamar'])->name('register.pelamar');
+Route::get('/register/perusahaan',      [AuthController::class,'showPerusahaan'])->name('register.perusahaan');
+Route::post('/register',                [AuthController::class,'register'])->name('register.post');
 

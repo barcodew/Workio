@@ -33,6 +33,7 @@ class Lowongan extends Model
         return $this->belongsTo(Perusahaan::class);
     }
 
+    
     public function lamarans()
     {
         return $this->hasMany(Lamaran::class);
@@ -74,74 +75,7 @@ class Lowongan extends Model
                 $q->whereRaw('LOWER(keahlian) LIKE ?', ["%{$skill}%"]);
             });
     }
-
-    /* ==========================
-     *  Helper: required skills (normalized)
-     * ========================== */
-    public function getRequiredSkillsAttribute(): array
-    {
-        // kalau di DB masih string "Laravel, React"
-        if (is_string($this->keahlian)) {
-            return collect(preg_split('/[,;]+/', $this->keahlian))
-                ->map(fn ($v) => mb_strtolower(trim($v)))
-                ->filter()
-                ->values()
-                ->all();
-        }
-
-        // kalau sudah array dari cast
-        if (is_array($this->keahlian)) {
-            return collect($this->keahlian)
-                ->map(fn ($v) => mb_strtolower(trim($v)))
-                ->filter()
-                ->values()
-                ->all();
-        }
-
-        return [];
-    }
-
-    /* ==========================
-     *  Match score vs user pelamar
-     * ========================== */
-
-    // persen kecocokan
-    public function matchScoreForUser(User $user): int
-    {
-        $pelamar = $user->pelamar;
-        if (!$pelamar) {
-            return 0;
-        }
-
-        $userSkills = collect($pelamar->normalized_skills ?? []); // accessor di model Pelamar
-        $jobSkills  = collect($this->required_skills);
-
-        if ($userSkills->isEmpty() || $jobSkills->isEmpty()) {
-            return 0;
-        }
-
-        $match = $jobSkills->intersect($userSkills);
-
-        return (int) round(($match->count() / $jobSkills->count()) * 100);
-    }
-
-    // daftar skill yang cocok
-    public function matchedSkillsForUser(User $user): array
-    {
-        $pelamar = $user->pelamar;
-        if (!$pelamar) {
-            return [];
-        }
-
-        $userSkills = collect($pelamar->normalized_skills ?? []);
-        $jobSkills  = collect($this->required_skills);
-
-        return $jobSkills
-            ->intersect($userSkills)
-            ->map(fn ($s) => strtoupper($s))
-            ->values()
-            ->all();
-    }
+ 
 
      public function scopeNotExpired($query)
     {

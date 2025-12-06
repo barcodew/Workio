@@ -7,7 +7,7 @@
     $u = $pelamar->user;
 
     // avatar
-    $placeholder = asset('images/cmnt1.jpg');
+    $placeholder = asset('images/job1.jpg');
     $fotoRaw = $u->avatar_path ?? null;
 
     if ($fotoRaw && Str::startsWith($fotoRaw, ['http://', 'https://'])) {
